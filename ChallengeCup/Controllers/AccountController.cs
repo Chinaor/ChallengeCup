@@ -417,7 +417,7 @@
 //            if (result.Succeeded)
 //            {
 //                return RedirectToAction(nameof(ResetPasswordConfirmation));
-//            }
+            //}
 //            AddErrors(result);
 //            return View();
 //        }
