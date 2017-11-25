@@ -10,6 +10,10 @@ namespace ChallengeCup.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<ApplicationUser> applicationUsers { set; get; }
+
+        public DbSet<ApplicationRole> applicationRoles { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
