@@ -16,26 +16,13 @@ namespace ChallengeCup.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
-
-        private readonly SignInManager<ApplicationUser> signInManager;
-
-        private readonly RoleManager<ApplicationRole> roleManager;
-
-        private readonly IAuthorizationService authorizationService;
 
         private readonly ILogger<AccountController> logger;
-        public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            RoleManager<ApplicationRole> roleManager,
-             IAuthorizationService authorizationService,
+        public AccountController(IAuthorizationService authorizationService,
             ILogger<AccountController> logger)
         {
-            this.userManager = userManager;
-            this.roleManager = roleManager;
-            this.signInManager = signInManager;
             this.logger = logger;
-            this.authorizationService = authorizationService;
+
         }
         // GET: /<controller>/
         public IActionResult Index()
@@ -43,46 +30,18 @@ namespace ChallengeCup.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 在这里实现登陆和jwt的签发
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<JsonResult> Login(User user)
         {
-            var result = await signInManager.PasswordSignInAsync(user.Username, user.Password, false, false);
-            if (result.Succeeded)
-            {
-                logger.LogDebug("登陆的用户为：{}", user.Username);
-                return Json(ResultUtilities.Success());
-            }
-            else
-            {
-                logger.LogDebug("用户 {},{} 登陆失败", user.Username,user.Password);
-                return Json(result);
-            }
+            return Json("init");
         }
 
-        [HttpGet]
-        public async Task<JsonResult> Logout()
-        {
-            await signInManager.SignOutAsync();
-            logger.LogDebug("用户登出");
-            return Json(ResultUtilities.Success());
-        }
-
-        [HttpPost]
-        public async Task<JsonResult> Register(User user)
-        {
-            logger.LogInformation(user.ToString());
-            var applicationUser = new ApplicationUser();
-            applicationUser.UserName = user.Username;
-
-            var role = new ApplicationRole();
-            role.Name = "user";
-            await roleManager.CreateAsync(role);
-        
-            var result = await userManager.CreateAsync(applicationUser, user.Password);
-
-            await userManager.AddToRoleAsync(applicationUser, "user");
-            return Json(result);
-        }
+      
 
         [Authorize(Roles = "user")]
         [HttpPost]

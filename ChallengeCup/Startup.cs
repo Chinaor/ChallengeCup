@@ -1,6 +1,7 @@
 ﻿using ChallengeCup.Authorization;
 using ChallengeCup.Data;
 using ChallengeCup.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,7 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Text;
 
 namespace ChallengeCup
 {
@@ -26,42 +29,41 @@ namespace ChallengeCup
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("ChallengeCupContext")));
-
-            services.AddIdentity<ApplicationUser, ApplicationRole>(options=>
+            services.AddAuthentication(x =>
             {
-                // Password settings
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequiredUniqueChars = 2;
-
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
-
-                options.SignIn.RequireConfirmedEmail = false;
-                options.SignIn.RequireConfirmedPhoneNumber = false;
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+                .AddJwtBearer(o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = "",
+                        RoleClaimType = "",
 
+                        ValidIssuer = "http://localhost:5200",
+                        ValidAudience = "api",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("secret"))
 
-            services.ConfigureApplicationCookie(options =>
-            {
-                // Cookie settings
-                options.Cookie.HttpOnly = true;
-                options.Cookie.Expiration = TimeSpan.FromDays(150);
-                options.LoginPath = "/Account/Login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
-                options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
-                options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
-                options.SlidingExpiration = true;
-            });
+            /***********************************TokenValidationParameters的参数默认值***********************************/
+            // RequireSignedTokens = true,
+            // SaveSigninToken = false,
+            // ValidateActor = false,
+            // 将下面两个参数设置为false，可以不验证Issuer和Audience，但是不建议这样做。
+            // ValidateAudience = true,
+            // ValidateIssuer = true, 
+            // ValidateIssuerSigningKey = false,
+            // 是否要求Token的Claims中必须包含Expires
+            // RequireExpirationTime = true,
+            // 允许的服务器时间偏移量
+            // ClockSkew = TimeSpan.FromSeconds(300),
+            // 是否验证Token有效期，使用当前时间与Token的Claims中的NotBefore和Expires对比
+            // ValidateLifetime = true
+        };
+                });
 
             services.AddMvc();
 
-            services.AddScoped<IAuthorizationHandler, UserAuthorizationHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
