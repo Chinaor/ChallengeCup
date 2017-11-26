@@ -8,6 +8,7 @@ using ChallengeCup.Models;
 using Microsoft.Extensions.Logging;
 using ChallengeCup.Vo;
 using ChallengeCup.Vo.Utilities;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,12 +20,16 @@ namespace ChallengeCup.Controllers
 
         private readonly SignInManager<ApplicationUser> signInManager;
 
+        private readonly RoleManager<ApplicationRole> roleManager;
+
         private readonly ILogger<AccountController> logger;
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            RoleManager<ApplicationRole> roleManager,
             ILogger<AccountController> logger)
         {
             this.userManager = userManager;
+            this.roleManager = roleManager;
             this.signInManager = signInManager;
             this.logger = logger;
         }
@@ -64,8 +69,31 @@ namespace ChallengeCup.Controllers
             logger.LogInformation(user.ToString());
             var applicationUser = new ApplicationUser();
             applicationUser.UserName = user.Username;
+
+            var role = new ApplicationRole();
+            role.Name = "user";
+            await roleManager.CreateAsync(role);
+        
             var result = await userManager.CreateAsync(applicationUser, user.Password);
+
+            await userManager.AddToRoleAsync(applicationUser, "user");
             return Json(result);
+        }
+
+        [Authorize(Roles = "user")]
+        [HttpPost]
+        public JsonResult Test1()
+        {
+            logger.LogDebug("测试授权");
+            return Json("hello");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public JsonResult Test2()
+        {
+            logger.LogDebug("测试授权2");
+            return Json("hello");
         }
     }
 }
