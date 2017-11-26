@@ -8,13 +8,21 @@ using ChallengeCup.Models;
 
 namespace ChallengeCup.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext:DbContext
     {
-        public DbSet<ApplicationUser> applicationUsers { set; get; }
+        public DbSet<User> Users { get; set; }
 
-        public DbSet<ApplicationRole> applicationRoles { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public DbSet<History> History { get; set; }
+
+        public DbSet<Medicine> Medicine { get; set; }
+
+        public DbSet<MedicineOrder> MedicineOrder { get; set; }
+
+        public DbSet<Order> Order { get; set; }
+
+        public ApplicationDbContext(DbContextOptions options)
             : base(options)
         {
 
