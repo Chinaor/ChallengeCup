@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ChallengeCup.Vo.Utilities
+﻿namespace ChallengeCup.Vo.Utilities
 {
     public class ResultUtilities
     {
@@ -19,7 +14,22 @@ namespace ChallengeCup.Vo.Utilities
 
         public static Result LoginFaile()
         {
-            return new Result(StatusCode.LOGIN_FAILE, "login faile", null);
+            return new Result(StatusCode.LOGIN_FAIL, "login faile", null);
+        }
+
+        public static Result LoginFaile(string message)
+        {
+            return new Result(StatusCode.LOGIN_FAIL, message, null);
+        }
+
+        public static Result Fail(string message)
+        {
+            return new Result(StatusCode.FAIL, message, null);
+        }
+
+        public static Result Fail()
+        {
+            return new Result(StatusCode.FAIL, "系统出错", null);
         }
     }
 }

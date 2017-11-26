@@ -8,7 +8,7 @@ using ChallengeCup.Models;
 
 namespace ChallengeCup.Data
 {
-    public class ApplicationDbContext:DbContext
+    public class AppDbContext:DbContext
     {
         public DbSet<User> Users { get; set; }
 
@@ -22,7 +22,7 @@ namespace ChallengeCup.Data
 
         public DbSet<Order> Order { get; set; }
 
-        public ApplicationDbContext(DbContextOptions options)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
 
