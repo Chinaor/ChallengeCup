@@ -22,16 +22,20 @@ namespace ChallengeCup.Controllers
 
         private readonly RoleManager<ApplicationRole> roleManager;
 
+        private readonly IAuthorizationService authorizationService;
+
         private readonly ILogger<AccountController> logger;
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<ApplicationRole> roleManager,
+             IAuthorizationService authorizationService,
             ILogger<AccountController> logger)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.signInManager = signInManager;
             this.logger = logger;
+            this.authorizationService = authorizationService;
         }
         // GET: /<controller>/
         public IActionResult Index()
@@ -92,6 +96,7 @@ namespace ChallengeCup.Controllers
         [HttpPost]
         public JsonResult Test2()
         {
+            //authorizationService.AuthorizeAsync()
             logger.LogDebug("测试授权2");
             return Json("hello");
         }

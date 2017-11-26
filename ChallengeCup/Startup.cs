@@ -1,5 +1,7 @@
-﻿using ChallengeCup.Data;
+﻿using ChallengeCup.Authorization;
+using ChallengeCup.Data;
 using ChallengeCup.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -58,6 +60,8 @@ namespace ChallengeCup
             });
 
             services.AddMvc();
+
+            services.AddScoped<IAuthorizationHandler, UserAuthorizationHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
