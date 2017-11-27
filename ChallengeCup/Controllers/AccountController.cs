@@ -5,6 +5,7 @@ using ChallengeCup.Vo.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -79,6 +80,7 @@ namespace ChallengeCup.Controllers
         [HttpPost]
         public JsonResult Test2()
         {
+            logger.LogDebug("当前登录的用户为 {}",TokenUtil.GetCurrentUser(HttpContext));
             logger.LogDebug("测试授权2");
             return Json("hello");
         }

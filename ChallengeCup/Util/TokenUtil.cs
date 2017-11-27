@@ -1,4 +1,5 @@
 ﻿using ChallengeCup.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace ChallengeCup.Util
 {
-    public class TokenUtil
+    public static class TokenUtil
     {
         public static string GetToken(User user)
         {
@@ -44,6 +45,20 @@ namespace ChallengeCup.Util
             
 
             return tokenString;
+        }
+
+        public static string GetCurrentUser(HttpContext httpContext)
+        {
+            var claims = httpContext.User.Claims;
+
+            foreach(var claim in claims)
+            {
+                if (ClaimTypes.NameIdentifier.Equals(claim.Type))
+                {
+                    return claim.Value;
+                }
+            }
+            return null;
         }
     }
 }
