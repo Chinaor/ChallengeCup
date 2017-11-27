@@ -8,12 +8,13 @@ namespace ChallengeCup.Authorization
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
     using System;
+    using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
 
     public static class JwtAuthenticatonExtention
     {
-        public static IServiceCollection AddJwtAuthorization(this IServiceCollection services)
+        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
         {
             services.AddAuthentication(x =>
             {
@@ -35,7 +36,6 @@ namespace ChallengeCup.Authorization
                         {
                             c.NoResult();
                             c.Response.StatusCode = 401;
-                            c.Response.ContentType = "text/plain";
 
                             return c.Response.WriteAsync(JsonConvert.SerializeObject(ResultUtil.LoginFaile("认证失败")));
                         }
@@ -43,9 +43,10 @@ namespace ChallengeCup.Authorization
 
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
-                        NameClaimType = "a",
-                        RoleClaimType = "a",
-
+                        //这里填写生成token的时候放在claim中的username和role的key
+                        NameClaimType = ClaimTypes.NameIdentifier,
+                        RoleClaimType = ClaimTypes.Role,
+                       
                         ValidIssuer = "lmy",
                         ValidAudience = "api",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Consts.Consts.Secret)),

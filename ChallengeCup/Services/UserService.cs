@@ -89,7 +89,7 @@ namespace ChallengeCup.Services
                 return "用户名已存在";
             }
 
-            user.Password = hasher.HashPassword(user.Password);
+            user.Password = hasher.HashPassword(user,user.Password);
 
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();

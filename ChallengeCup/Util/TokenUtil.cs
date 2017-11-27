@@ -9,7 +9,7 @@ namespace ChallengeCup.Util
 {
     public class TokenUtil
     {
-        public static string getToken(User user)
+        public static string GetToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Consts.Consts.Secret);
@@ -19,10 +19,10 @@ namespace ChallengeCup.Util
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim("aud","api"),
-                    new Claim("iss","lmy"),
-                    //new Claim("userId",user.Id.ToString()),
-                    new Claim("username",user.Username)
+                    new Claim(JwtRegisteredClaimNames.Aud,"api"),
+                    new Claim(JwtRegisteredClaimNames.Iss,"lmy"),
+                    new Claim(ClaimTypes.Role,"user"),
+                    new Claim(ClaimTypes.NameIdentifier,user.Username)
                 }),
                 Expires = expiresAt,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -41,6 +41,7 @@ namespace ChallengeCup.Util
             //        expires_at = new DateTimeOffset(expiresAt).ToUnixTimeSeconds()
             //    }
             //});
+            
 
             return tokenString;
         }

@@ -1,6 +1,8 @@
 ﻿using ChallengeCup.Authorization;
 using ChallengeCup.Data;
 using ChallengeCup.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +27,12 @@ namespace ChallengeCup
             services.AddDbContext<AppDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("ChallengeCupContext")));
             
-            services.AddJwtAuthorization();
+            services.AddJwtAuthentication();
+
+            services.AddAuthorization(options =>
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build();
+            });
 
             services.AddScoped<UserService>();
 
