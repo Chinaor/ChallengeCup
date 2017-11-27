@@ -19,10 +19,10 @@ namespace ChallengeCup.Util
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-            new Claim("aud","api"),
-            new Claim("iss","lmy"),
-            new Claim("userId",user.Id.ToString()),
-            new Claim("username",user.Username)
+                    new Claim("aud","api"),
+                    new Claim("iss","lmy"),
+                    new Claim("userId",user.Id.ToString()),
+                    new Claim("username",user.Username)
                 }),
                 Expires = expiresAt,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

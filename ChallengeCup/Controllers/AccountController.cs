@@ -59,7 +59,8 @@ namespace ChallengeCup.Controllers
             {
                 logger.LogDebug("用户 {}  登陆成功", user.Username);
                 //登陆成功
-                return Json(ResultUtilities.Success(TokenUtil.getToken(user)));
+                string token = TokenUtil.getToken(userInDb);
+                return Json(ResultUtilities.Success(token));
             }
             else
             {
@@ -96,11 +97,10 @@ namespace ChallengeCup.Controllers
             return Json("hello");
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "a")]
         [HttpPost]
         public JsonResult Test2()
         {
-            //authorizationService.AuthorizeAsync()
             logger.LogDebug("测试授权2");
             return Json("hello");
         }

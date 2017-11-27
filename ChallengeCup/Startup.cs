@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ChallengeCup
 {
@@ -36,10 +37,19 @@ namespace ChallengeCup
             })
                 .AddJwtBearer(o =>
                 {
+                    o.Events = new JwtBearerEvents()
+                    {
+                        OnTokenValidated = context =>
+                        {
+                            //在这里获取验证之后的token
+                            return Task.CompletedTask;
+                        }
+                    };
+
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
-                        //    NameClaimType = "a",
-                        //    RoleClaimType = "a",
+                        NameClaimType = "a",
+                        RoleClaimType = "a",
 
                         ValidIssuer = "lmy",
                         ValidAudience = "api",
