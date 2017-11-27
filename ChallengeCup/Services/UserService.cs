@@ -24,7 +24,7 @@ namespace ChallengeCup.Services
             this.logger = logger;
         }
 
-        public User GetUserByUsername(string username)=> context.Users.Single(user => user.Username == username);
+        public User GetUserByUsername(string username)=> context.Users.SingleOrDefault(user => user.Username == username);
 
         public bool VertifyPassword(User user)
         {
@@ -83,11 +83,13 @@ namespace ChallengeCup.Services
         {
             var userInDb = GetUserByUsername(user.Username);
 
-            if (userInDb == null)
+            if (userInDb != null)
             {
                 logger.LogDebug("用户：{} 已存在", user.Username);
                 return "用户名已存在";
             }
+
+            user.Password = hasher.HashPassword(user.Password);
 
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();

@@ -1,10 +1,12 @@
 ﻿using ChallengeCup.Authorization;
 using ChallengeCup.Data;
+using ChallengeCup.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ChallengeCup
 {
@@ -24,6 +26,8 @@ namespace ChallengeCup
                 options.UseMySql(Configuration.GetConnectionString("ChallengeCupContext")));
             
             services.AddJwtAuthorization();
+
+            services.AddScoped<UserService>();
 
             services.AddMvc();
 

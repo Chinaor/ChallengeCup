@@ -43,8 +43,8 @@ namespace ChallengeCup.Authorization
 
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
-                        //    NameClaimType = "a",
-                        //    RoleClaimType = "a",
+                        NameClaimType = "a",
+                        RoleClaimType = "a",
 
                         ValidIssuer = "lmy",
                         ValidAudience = "api",
