@@ -21,7 +21,7 @@ namespace ChallengeCup.Util
                 {
                     new Claim("aud","api"),
                     new Claim("iss","lmy"),
-                    new Claim("userId",user.Id.ToString()),
+                    //new Claim("userId",user.Id.ToString()),
                     new Claim("username",user.Username)
                 }),
                 Expires = expiresAt,

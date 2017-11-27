@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using ChallengeCup.Models;
-using Microsoft.Extensions.Logging;
-using ChallengeCup.Vo;
+﻿using ChallengeCup.Models;
+using ChallengeCup.Services;
+using ChallengeCup.Util;
 using ChallengeCup.Vo.Utilities;
 using Microsoft.AspNetCore.Authorization;
-using ChallengeCup.Data;
-using ChallengeCup.Util;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,14 +16,14 @@ namespace ChallengeCup.Controllers
 
         private readonly ILogger<AccountController> logger;
 
-        private readonly AppDbContext context;
+        private readonly UserService userService;
 
         public AccountController(IAuthorizationService authorizationService,
-            AppDbContext context,
+                UserService userService,
             ILogger<AccountController> logger)
         {
             this.logger = logger;
-            this.context = context;
+            this.userService = userService;
 
         }
         // GET: /<controller>/
@@ -45,48 +40,31 @@ namespace ChallengeCup.Controllers
         [HttpPost]
         public JsonResult Login(User user)
         {
-            var hasher = new PasswordHasher<User>();
-            var userInDb = context.Users.Single(x => x.Username == user.Username);
+            string result=userService.Login(user);
 
-            logger.LogDebug("用户 {}  正在登陆",user.Username);
-
-            if (userInDb == null) {
-                logger.LogDebug("用户 {}  不存在", user.Username);
-                return Json(ResultUtilities.LoginFaile("用户名不存在"));
-            }
-            var result = hasher.VerifyHashedPassword(user, userInDb.Password, user.Password);
-            if (result == PasswordVerificationResult.Success)
+            if (result.Equals("success"))
             {
-                logger.LogDebug("用户 {}  登陆成功", user.Username);
-                //登陆成功
-                string token = TokenUtil.getToken(userInDb);
-                return Json(ResultUtilities.Success(token));
+                return Json(ResultUtil.Success(TokenUtil.getToken(user)));
             }
             else
             {
-                logger.LogDebug("用户 {}  用户名或密码错误", user.Username);
-                //登陆失败
-                return Json(ResultUtilities.LoginFaile("用户名或密码错误"));
+                return Json(ResultUtil.LoginFaile(result));
             }
         }
 
 
         public async Task<JsonResult> Register(User user)
         {
-            var userInDb=context.Users.SingleOrDefault(x => x.Username == user.Username);
-            if (userInDb != null)
+            string result=await userService.AddUserAsync(user);
+            if (result == "success")
             {
-                return Json(ResultUtilities.Fail("用户已经存在"));
+                 return Json(ResultUtil.Success(TokenUtil.getToken(user)));
+            }
+            else
+            {
+                return Json(ResultUtil.Fail(result));
             }
 
-            var hasher = new PasswordHasher<User>();
-            user.Password = hasher.HashPassword(user, user.Password);
-
-            await context.Users.AddAsync(user);
-            await context.SaveChangesAsync();
-
-            logger.LogDebug("用户：{} 注册成功", user.Username);
-            return Json(ResultUtilities.Success(TokenUtil.getToken(user)));
         }
 
         [Authorize]

@@ -1,6 +1,6 @@
 ﻿namespace ChallengeCup.Vo.Utilities
 {
-    public class ResultUtilities
+    public class ResultUtil
     {
         public static Result Success()
         {
