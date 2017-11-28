@@ -17,7 +17,7 @@
             return new Result(StatusCode.LOGIN_FAIL, "login faile", null);
         }
 
-        public static Result LoginFaile(string message)
+        public static Result LoginFail(string message)
         {
             return new Result(StatusCode.LOGIN_FAIL, message, null);
         }

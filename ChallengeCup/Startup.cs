@@ -40,6 +40,8 @@ namespace ChallengeCup
 
             services.AddScoped<OrderService>();
 
+            services.AddScoped<ScoreService>();
+
             services.AddMvc();
             
         }

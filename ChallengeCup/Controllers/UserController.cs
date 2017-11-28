@@ -50,7 +50,7 @@ namespace ChallengeCup.Controllers
             }
             else
             {
-                return Json(ResultUtil.LoginFaile(result));
+                return Json(ResultUtil.LoginFail(result));
             }
         }
 

@@ -2,6 +2,7 @@
 using ChallengeCup.Models;
 using ChallengeCup.Util;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,10 @@ namespace ChallengeCup.Services
             this.context = context;
         }
 
-        public List<Order> GetAll()=>context.Order.ToList();
+        public List<Order> GetAll()
+        {
+            return context.Order.Include(i => i.Score).ToList();
+        }
 
         public List<Order> GetByDoctorId(HttpContext httpContext)
         {
@@ -57,6 +61,16 @@ namespace ChallengeCup.Services
             order.UserId = userId;
             order.Date = DateTime.UtcNow;
             context.Add(order);
+        }
+
+        public Order GetOrderWithScore(string orderId)=>context.Order.Include(i => i.Score).SingleOrDefault(i => i.Id.Equals(orderId));
+
+        public void UpdateScore(string orderId,Score score)
+        {
+            var Order = context.Order.SingleOrDefault(x => x.Id.Equals(orderId));
+            Order.Score = score;
+            context.Update(Order);
+            context.SaveChanges();
         }
     }
 }

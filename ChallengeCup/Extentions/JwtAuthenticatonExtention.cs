@@ -37,7 +37,7 @@ namespace ChallengeCup.Authorization
                             c.NoResult();
                             c.Response.StatusCode = 401;
 
-                            return c.Response.WriteAsync(JsonConvert.SerializeObject(ResultUtil.LoginFaile("认证失败")));
+                            return c.Response.WriteAsync(JsonConvert.SerializeObject(ResultUtil.LoginFail("认证失败")));
                         }
                     };
 

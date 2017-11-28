@@ -29,5 +29,7 @@ namespace ChallengeCup.Models
         //医生开的处方，
         public string Prescription { get; set; }
 
+        public Score Score { get; set; }
+
     }
 }
