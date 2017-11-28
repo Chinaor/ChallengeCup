@@ -2,12 +2,13 @@
 
 namespace ChallengeCup.Models
 {
-    public class User
+    public class User:IUser
     {
         
         public string Id { get; set; }
+
         //用户名
-        public string  Username { get; set; }
+        public string  Name { get; set; }
 
         //密码
         public string  Password { get; set; }

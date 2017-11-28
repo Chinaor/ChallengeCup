@@ -8,9 +8,9 @@ using System.Text;
 
 namespace ChallengeCup.Util
 {
-    public static class TokenUtil
+    public static class TokenUtil<TUser> where TUser :IUser
     {
-        public static object GetToken(User user)
+        public static object GetToken(TUser user,string rols)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Consts.Consts.Secret);
@@ -22,8 +22,8 @@ namespace ChallengeCup.Util
                 {
                     new Claim(JwtRegisteredClaimNames.Aud,"api"),
                     new Claim(JwtRegisteredClaimNames.Iss,"lmy"),
-                    new Claim(ClaimTypes.Role,"user"),
-                    new Claim(ClaimTypes.NameIdentifier,user.Username)
+                    new Claim(ClaimTypes.Role,rols),
+                    new Claim(ClaimTypes.NameIdentifier,user.Name)
                 }),
                 Expires = expiresAt,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

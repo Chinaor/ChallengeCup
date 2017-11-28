@@ -44,7 +44,7 @@ namespace ChallengeCup.Controllers
 
             if (result.Equals("success"))
             {
-                return Json(ResultUtil.Success(TokenUtil.GetToken(user)));
+                return Json(ResultUtil.Success(TokenUtil<User>.GetToken(user,"user")));
             }
             else
             {
@@ -58,7 +58,7 @@ namespace ChallengeCup.Controllers
             string result=await userService.AddUserAsync(user);
             if (result.Equals("success"))
             {
-                 return Json(ResultUtil.Success(TokenUtil.GetToken(user)));
+                 return Json(ResultUtil.Success(TokenUtil<User>.GetToken(user,"user")));
             }
             else
             {

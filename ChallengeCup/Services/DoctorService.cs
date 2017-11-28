@@ -1,5 +1,6 @@
 ﻿using ChallengeCup.Data;
 using ChallengeCup.Models;
+using ChallengeCup.Util;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -55,7 +56,18 @@ namespace ChallengeCup.Services
         public void update(Doctor doctor)
         {
             context.Update(doctor);
-            context.SaveChanges()
+            context.SaveChanges();
+        }
+
+        public object Login(Doctor doctor)
+        {
+            var doctorInDb = context.Doctor.SingleOrDefault(x => x.Name.Equals(doctor.Name) && x.PhoneNumber.Equals(doctor.PhoneNumber) && x.Code.Equals(doctor.Code));
+
+            if (doctorInDb==null)
+            {
+                return "fail";
+            }
+            return TokenUtil<Doctor>.GetToken(doctor, "doctor");
         }
     }
 }

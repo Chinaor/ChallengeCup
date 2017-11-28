@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ChallengeCup.Models
 {
-    public class Doctor
+    public class Doctor:IUser
     {
         public string Id { get; set; }
 

@@ -103,5 +103,22 @@ namespace ChallengeCup.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult Login(Doctor doctor)
+        {
+            if (string.IsNullOrWhiteSpace(doctor.Code)||string.IsNullOrWhiteSpace(doctor.Name)||string.IsNullOrWhiteSpace(doctor.PhoneNumber))
+            {
+                return Json(ResultUtil.LoginFaile("提交的用户信息不完整"));
+            }
+
+            var result=service.Login(doctor);
+
+            if (result.Equals("fail"))
+            {
+                return Json(ResultUtil.LoginFaile("医生信息不正确"));
+            }
+            return Json(ResultUtil.Success(result));
+        }
+
     }
 }
