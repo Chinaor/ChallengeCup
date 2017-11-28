@@ -26,7 +26,7 @@ namespace ChallengeCup.Controllers
             this.scoreService = scoreService;
         }
 
-        //[Authorize(Roles = "user")]
+        [Authorize(Roles = "user")]
         public Result Do(string orderId,[Bind("Mark,Evaluate")]Score score)
         {
             var order=orderService.GetOrderWithScore(orderId);
