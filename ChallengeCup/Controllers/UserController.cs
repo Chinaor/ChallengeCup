@@ -44,6 +44,8 @@ namespace ChallengeCup.Controllers
 
             if (result.Equals("success"))
             {
+                user = userService.GetUserByUsername(user.UserName);
+                logger.LogDebug("当前用户{}", user.Id);
                 return Json(ResultUtil.Success(TokenUtil<User>.GetToken(user,"user")));
             }
             else

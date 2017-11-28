@@ -41,5 +41,10 @@
         {
             return new Result(StatusCode.INVALID_PARAM, "参数错误", null);
         }
+
+        public static Result UnAuthorazition()
+        {
+            return new Result(StatusCode.UNAUTHORIZATION, "拒绝访问，权限不够", null);
+        }
     }
 }

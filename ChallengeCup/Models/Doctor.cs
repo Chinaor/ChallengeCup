@@ -7,11 +7,6 @@ namespace ChallengeCup.Models
 {
     public class Doctor:IUser
     {
-        public string Id { get; set; }
-
-        //姓名
-        public string Name { get; set; }
-
         //性别
         public int Sex { get; set; }
 

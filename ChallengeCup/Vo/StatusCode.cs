@@ -8,6 +8,7 @@ namespace ChallengeCup.Vo
     public enum StatusCode
     {
         SUCCES=200,
+        UNAUTHORIZATION=401,
         NOT_FOUND=404,
         SYSTEM_ERROR=500,
         LOGIN_FAIL=4001,

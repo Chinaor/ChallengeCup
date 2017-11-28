@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ChallengeCup.Models
 {
     public class Order
     {
+        [Key]
         public string Id { get; set; }
 
         //订单地址
@@ -23,6 +22,12 @@ namespace ChallengeCup.Models
 
         //订单描述，病情描述
         public string Description { get; set; }
+
+        //当前订单的状态，1为未接单，2为接单，3为订单完成
+        public int Status { get; set; }
+
+        //医生开的处方，
+        public string Prescription { get; set; }
 
     }
 }

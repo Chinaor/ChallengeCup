@@ -24,7 +24,7 @@ namespace ChallengeCup.Services
 
         public object Add(Doctor doctor)
         {
-            if (string.IsNullOrWhiteSpace(doctor.Name) || string.IsNullOrWhiteSpace(doctor.PhoneNumber))
+            if (string.IsNullOrWhiteSpace(doctor.UserName) || string.IsNullOrWhiteSpace(doctor.PhoneNumber))
             {
                 return "fail";
             }
@@ -53,7 +53,7 @@ namespace ChallengeCup.Services
             return "success";
         }
 
-        public void update(Doctor doctor)
+        public void Update(Doctor doctor)
         {
             context.Update(doctor);
             context.SaveChanges();
@@ -61,13 +61,13 @@ namespace ChallengeCup.Services
 
         public object Login(Doctor doctor)
         {
-            var doctorInDb = context.Doctor.SingleOrDefault(x => x.Name.Equals(doctor.Name) && x.PhoneNumber.Equals(doctor.PhoneNumber) && x.Code.Equals(doctor.Code));
+            var doctorInDb = context.Doctor.SingleOrDefault(x => x.UserName.Equals(doctor.UserName) && x.PhoneNumber.Equals(doctor.PhoneNumber) && x.Code.Equals(doctor.Code));
 
             if (doctorInDb==null)
             {
                 return "fail";
             }
-            return TokenUtil<Doctor>.GetToken(doctor, "doctor");
+            return TokenUtil<Doctor>.GetToken(doctorInDb, "doctor");
         }
     }
 }

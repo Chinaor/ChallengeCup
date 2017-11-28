@@ -24,11 +24,11 @@ namespace ChallengeCup.Services
             this.logger = logger;
         }
 
-        public User GetUserByUsername(string username)=> context.User.SingleOrDefault(user => user.Name == username);
+        public User GetUserByUsername(string username)=> context.User.SingleOrDefault(user => user.UserName == username);
 
         public bool VertifyPassword(User user)
         {
-            var userInDb = GetUserByUsername(user.Name);
+            var userInDb = GetUserByUsername(user.UserName);
 
             var result = hasher.VerifyHashedPassword(user, userInDb.Password, user.Password);
 
@@ -40,7 +40,7 @@ namespace ChallengeCup.Services
 
         public string Login(User user)
         {
-            if (!IsUserExist(user)||string.IsNullOrWhiteSpace(user.Name))
+            if (!IsUserExist(user)||string.IsNullOrWhiteSpace(user.UserName))
             {
                 return "用户名不存在";
             }
@@ -49,14 +49,14 @@ namespace ChallengeCup.Services
 
             if (result)
             {
-                logger.LogDebug("用户 {}  登陆成功", user.Name);
+                logger.LogDebug("用户 {}  登陆成功", user.UserName);
                 //登陆成功
                 return "success";
                 
             }
             else
             {
-                logger.LogDebug("用户 {}  用户名或密码错误", user.Name);
+                logger.LogDebug("用户 {}  用户名或密码错误", user.UserName);
                 //登陆失败
                 return "用户名或密码错误";
             }
@@ -65,7 +65,7 @@ namespace ChallengeCup.Services
 
         public bool IsUserExist(User user)
         {
-            var userInDb = GetUserByUsername(user.Name);
+            var userInDb = GetUserByUsername(user.UserName);
 
             if (userInDb == null)
             {
@@ -81,11 +81,11 @@ namespace ChallengeCup.Services
 
         public async Task<string> AddUserAsync(User user)
         {
-            var userInDb = GetUserByUsername(user.Name);
+            var userInDb = GetUserByUsername(user.UserName);
 
             if (userInDb != null)
             {
-                logger.LogDebug("用户：{} 已存在", user.Name);
+                logger.LogDebug("用户：{} 已存在", user.UserName);
                 return "用户名已存在";
             }
 
@@ -93,7 +93,7 @@ namespace ChallengeCup.Services
 
             await context.User.AddAsync(user);
             await context.SaveChangesAsync();
-            logger.LogDebug("用户：{} 注册成功", user.Name);
+            logger.LogDebug("用户：{} 注册成功", user.UserName);
 
             return "success";
         }

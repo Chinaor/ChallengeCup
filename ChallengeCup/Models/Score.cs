@@ -5,10 +5,14 @@ using System.Threading.Tasks;
 
 namespace ChallengeCup.Models
 {
-    public class IUser
+    public class Score
     {
-        public string UserName { get; set; }
-
         public string Id { get; set; }
+
+        //得分
+        public int Mark { get; set; }
+
+        //评价
+        public string Description { get; set; }
     }
 }

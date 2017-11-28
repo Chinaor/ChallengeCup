@@ -14,15 +14,12 @@ namespace ChallengeCup.Controllers
 {
     public class DoctorController : Controller
     {
-        private readonly ChallengeCupDbContext _context;
-
         private readonly DoctorService service;
 
-        public DoctorController(ChallengeCupDbContext context,
-            DoctorService service)
+        public DoctorController(DoctorService service)
         {
             this.service = service;
-            _context = context;
+           
         }
 
         // GET: Doctors
@@ -78,7 +75,7 @@ namespace ChallengeCup.Controllers
             {
                 return Json(ResultUtil.NotFound());
             }
-            service.update(doctor);
+            service.Update(doctor);
 
             return Json(ResultUtil.Success());
         }
@@ -106,7 +103,7 @@ namespace ChallengeCup.Controllers
         [HttpPost]
         public JsonResult Login(Doctor doctor)
         {
-            if (string.IsNullOrWhiteSpace(doctor.Code)||string.IsNullOrWhiteSpace(doctor.Name)||string.IsNullOrWhiteSpace(doctor.PhoneNumber))
+            if (string.IsNullOrWhiteSpace(doctor.Code)||string.IsNullOrWhiteSpace(doctor.UserName)||string.IsNullOrWhiteSpace(doctor.PhoneNumber))
             {
                 return Json(ResultUtil.LoginFaile("提交的用户信息不完整"));
             }

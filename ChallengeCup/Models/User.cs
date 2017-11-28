@@ -4,11 +4,6 @@ namespace ChallengeCup.Models
 {
     public class User:IUser
     {
-        
-        public string Id { get; set; }
-
-        //用户名
-        public string  Name { get; set; }
 
         //密码
         public string  Password { get; set; }

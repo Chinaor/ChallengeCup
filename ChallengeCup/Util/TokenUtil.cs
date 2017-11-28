@@ -10,7 +10,7 @@ namespace ChallengeCup.Util
 {
     public static class TokenUtil<TUser> where TUser :IUser
     {
-        public static object GetToken(TUser user,string rols)
+        public static object GetToken(TUser user,string roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Consts.Consts.Secret);
@@ -22,8 +22,9 @@ namespace ChallengeCup.Util
                 {
                     new Claim(JwtRegisteredClaimNames.Aud,"api"),
                     new Claim(JwtRegisteredClaimNames.Iss,"lmy"),
-                    new Claim(ClaimTypes.Role,rols),
-                    new Claim(ClaimTypes.NameIdentifier,user.Name)
+                    //new Claim(ClaimTypes.Role,roles),
+                    //new Claim(ClaimTypes.NameIdentifier,user.UserName),
+                    //new Claim("id",user.Id)
                 }),
                 Expires = expiresAt,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -50,18 +51,5 @@ namespace ChallengeCup.Util
             };
         }
 
-        public static string GetCurrentUser(HttpContext httpContext)
-        {
-            var claims = httpContext.User.Claims;
-
-            foreach (var claim in claims)
-            {
-                if (ClaimTypes.NameIdentifier.Equals(claim.Type))
-                {
-                    return claim.Value;
-                }
-            }
-            return null;
-        }
     }
 }
