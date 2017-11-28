@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ChallengeCup
 {
@@ -24,7 +23,7 @@ namespace ChallengeCup
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options =>
+            services.AddDbContext<ChallengeCupDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("ChallengeCupContext")));
             
             services.AddJwtAuthentication();
@@ -37,7 +36,7 @@ namespace ChallengeCup
             services.AddScoped<UserService>();
 
             services.AddMvc();
-
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

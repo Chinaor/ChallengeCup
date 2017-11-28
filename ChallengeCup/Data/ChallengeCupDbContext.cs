@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using ChallengeCup.Models;
 using Microsoft.EntityFrameworkCore;
-using ChallengeCup.Models;
 
 namespace ChallengeCup.Data
 {
-    public class AppDbContext:DbContext
+    public class ChallengeCupDbContext:DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
 
-        public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<Doctor> Doctor { get; set; }
 
         public DbSet<History> History { get; set; }
 
@@ -22,7 +17,7 @@ namespace ChallengeCup.Data
 
         public DbSet<Order> Order { get; set; }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options)
+        public ChallengeCupDbContext(DbContextOptions<ChallengeCupDbContext> options)
             : base(options)
         {
 

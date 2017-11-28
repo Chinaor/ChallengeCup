@@ -10,7 +10,7 @@ using System;
 
 namespace ChallengeCup.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(ChallengeCupDbContext))]
     [Migration("20171126093818_Init")]
     partial class Init
     {

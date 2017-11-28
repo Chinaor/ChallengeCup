@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace ChallengeCup.Controllers
 {
-    public class AccountController : Controller
+    public class UserController : Controller
     {
 
-        private readonly ILogger<AccountController> logger;
+        private readonly ILogger<UserController> logger;
 
         private readonly UserService userService;
 
-        public AccountController(IAuthorizationService authorizationService,
+        public UserController(IAuthorizationService authorizationService,
                 UserService userService,
-            ILogger<AccountController> logger)
+            ILogger<UserController> logger)
         {
             this.logger = logger;
             this.userService = userService;
@@ -56,13 +56,13 @@ namespace ChallengeCup.Controllers
         public async Task<JsonResult> Register(User user)
         {
             string result=await userService.AddUserAsync(user);
-            if (result == "success")
+            if (result.Equals("success"))
             {
                  return Json(ResultUtil.Success(TokenUtil.GetToken(user)));
             }
             else
             {
-                return Json(ResultUtil.Fail(result));
+                return Json(ResultUtil.System_Error(result));
             }
 
         }

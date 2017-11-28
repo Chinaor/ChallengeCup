@@ -10,7 +10,7 @@ using System;
 
 namespace ChallengeCup.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(ChallengeCupDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

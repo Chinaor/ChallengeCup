@@ -22,14 +22,24 @@
             return new Result(StatusCode.LOGIN_FAIL, message, null);
         }
 
-        public static Result Fail(string message)
+        public static Result System_Error(string message)
         {
-            return new Result(StatusCode.FAIL, message, null);
+            return new Result(StatusCode.SYSTEM_ERROR, message, null);
         }
 
-        public static Result Fail()
+        public static Result System_Error()
         {
-            return new Result(StatusCode.FAIL, "系统出错", null);
+            return new Result(StatusCode.SYSTEM_ERROR, "系统出错", null);
+        }
+
+        public static Result NotFound()
+        {
+            return new Result(StatusCode.NOT_FOUND, "资源未找到", null);
+        }
+
+        public static Result InvalidParam()
+        {
+            return new Result(StatusCode.INVALID_PARAM, "参数错误", null);
         }
     }
 }

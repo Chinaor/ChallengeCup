@@ -11,12 +11,12 @@ namespace ChallengeCup.Services
     public class UserService
     {
 
-        private readonly AppDbContext context;
+        private readonly ChallengeCupDbContext context;
 
         private readonly ILogger<UserService> logger;
 
         PasswordHasher<User> hasher;
-        public UserService(AppDbContext context,
+        public UserService(ChallengeCupDbContext context,
             ILogger<UserService> logger)
         {
             hasher = new PasswordHasher<User>();
@@ -24,7 +24,7 @@ namespace ChallengeCup.Services
             this.logger = logger;
         }
 
-        public User GetUserByUsername(string username)=> context.Users.SingleOrDefault(user => user.Username == username);
+        public User GetUserByUsername(string username)=> context.User.SingleOrDefault(user => user.Username == username);
 
         public bool VertifyPassword(User user)
         {
@@ -40,7 +40,7 @@ namespace ChallengeCup.Services
 
         public string Login(User user)
         {
-            if (!IsUserExist(user))
+            if (!IsUserExist(user)||string.IsNullOrWhiteSpace(user.Username))
             {
                 return "用户名不存在";
             }
@@ -91,7 +91,7 @@ namespace ChallengeCup.Services
 
             user.Password = hasher.HashPassword(user,user.Password);
 
-            await context.Users.AddAsync(user);
+            await context.User.AddAsync(user);
             await context.SaveChangesAsync();
             logger.LogDebug("用户：{} 注册成功", user.Username);
 
