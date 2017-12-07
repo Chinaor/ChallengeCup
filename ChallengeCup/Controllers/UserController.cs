@@ -60,7 +60,8 @@ namespace ChallengeCup.Controllers
             string result=await userService.AddUserAsync(user);
             if (result.Equals("success"))
             {
-                 return Json(ResultUtil.Success(TokenUtil<User>.GetToken(user,"user")));
+                user = userService.GetUserByUsername(user.UserName);
+                return Json(ResultUtil.Success(TokenUtil<User>.GetToken(user,"user")));
             }
             else
             {

@@ -61,7 +61,11 @@ namespace ChallengeCup.Services
 
         public object Login(Doctor doctor)
         {
-            var doctorInDb = context.Doctor.SingleOrDefault(x => x.UserName.Equals(doctor.UserName) && x.PhoneNumber.Equals(doctor.PhoneNumber) && x.Code.Equals(doctor.Code));
+            var doctorInDb = context.Doctor.SingleOrDefault(x =>x.UserName.Equals(doctor.UserName)&&x.PhoneNumber.Equals(doctor.PhoneNumber)&&x.Code.Equals(doctor.Code));
+
+            logger.LogDebug("医生username{}", doctor.UserName);
+            logger.LogDebug("医生phone{}", doctor.PhoneNumber);
+            logger.LogDebug("医生code{}", doctor.Code);
 
             if (doctorInDb==null)
             {

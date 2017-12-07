@@ -69,7 +69,7 @@ namespace ChallengeCup.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public JsonResult Edit(string id, [Bind("Id,Name,Sex,Description,Type,Code,PhoneNumber,Birthday")] Doctor doctor)
+        public JsonResult Edit(string id, [Bind("Id,UserName,Sex,Description,Type,PhoneNumber,Birthday")] Doctor doctor)
         {
             if (id != doctor.Id)
             {

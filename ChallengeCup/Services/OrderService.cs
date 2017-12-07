@@ -3,6 +3,7 @@ using ChallengeCup.Models;
 using ChallengeCup.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,13 @@ namespace ChallengeCup.Services
 {
     public class OrderService
     {
-        ChallengeCupDbContext context;
-        public OrderService(ChallengeCupDbContext context)
+        private readonly ChallengeCupDbContext context;
+
+        private readonly ILogger<OrderService> logger;
+        public OrderService(ChallengeCupDbContext context,
+            ILogger<OrderService> logger)
         {
+            this.logger = logger;
             this.context = context;
         }
 
@@ -27,6 +32,8 @@ namespace ChallengeCup.Services
         {
             string doctorId = UserUtil.GetCurrentUserParam(httpContext, "id");
 
+            logger.LogDebug("医生id {}", doctorId)
+                ;
             return context.Order.Where(x => x.DoctorId.Equals(doctorId)).ToList();
         }
 
@@ -41,7 +48,6 @@ namespace ChallengeCup.Services
 
         public void UpdateStatus(Order order,int status)
         {
-
             order.Status = status;
             context.Update(order);
             context.SaveChanges();
@@ -61,6 +67,7 @@ namespace ChallengeCup.Services
             order.UserId = userId;
             order.Date = DateTime.UtcNow;
             context.Add(order);
+            context.SaveChanges();
         }
 
         public Order GetOrderWithScore(string orderId)=>context.Order.Include(i => i.Score).SingleOrDefault(i => i.Id.Equals(orderId));

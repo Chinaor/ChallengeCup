@@ -27,6 +27,7 @@ namespace ChallengeCup.Controllers
         }
 
         [Authorize(Roles = "user")]
+        //[HttpPost]
         public Result Do(string orderId,[Bind("Mark,Evaluate")]Score score)
         {
             var order=orderService.GetOrderWithScore(orderId);

@@ -20,13 +20,13 @@ namespace ChallengeCup.Controllers
 
         public Result Index() => ResultUtil.Success(service.GetAll());
 
-        [Authorize]
+        [Authorize(Roles = "doctor")]
         public Result GetOrderByDoctorId() => ResultUtil.Success(service.GetByDoctorId(HttpContext));
 
-        [Authorize]
-        public Result GetOrderByUserId() => ResultUtil.Success(service.GetByDoctorId(HttpContext));
+        [Authorize(Roles = "user")]
+        public Result GetOrderByUserId() => ResultUtil.Success(service.GetByUserId(HttpContext));
 
-        [Authorize]
+        [Authorize(Roles = "doctor")]
         public Result AcceptOrder(string id)
         {
             Order order=service.GetById(id);
@@ -42,7 +42,7 @@ namespace ChallengeCup.Controllers
             return ResultUtil.Success();
         }
 
-        [Authorize]
+        [Authorize(Roles = "doctor")]
         [HttpPost]
         public Result DoPrescription(string id,string Prescription)
         {
@@ -60,7 +60,7 @@ namespace ChallengeCup.Controllers
         }
 
         //user do this
-        [Authorize]
+        [Authorize(Roles = "user")]
         public Result CompleteOrder(string id)
         {
             Order order = service.GetById(id);
@@ -77,7 +77,7 @@ namespace ChallengeCup.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "user")]
         public Result PostOrder(Order order)
         {
             service.AddOrder(order,HttpContext);
