@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,20 +29,54 @@ namespace ChallengeCup.Services
             return context.Order.Include(i => i.Score).ToList();
         }
 
-        public List<Order> GetByDoctorId(HttpContext httpContext)
+        public IList GetByDoctorId(HttpContext httpContext)
         {
             string doctorId = UserUtil.GetCurrentUserParam(httpContext, "id");
 
             logger.LogDebug("医生id {}", doctorId)
                 ;
-            return context.Order.Where(x => x.DoctorId.Equals(doctorId)).ToList();
+            //return context.Order.Where(x => x.DoctorId.Equals(doctorId)).ToList();
+
+            return context.Order.Join(context.User, m => m.UserId, f => f.Id, (m, f) => new
+            {
+                m.Id,
+                m.Date,
+                m.Address,
+                m.Description,
+                m.Prescription,
+                m.Status,
+                m.Score,
+                m.DoctorId,
+                m.UserId,
+                f.UserName,
+                f.Birthday,
+                f.Sex
+            }).Where(x=>x.DoctorId.Equals(doctorId)).ToList();
         }
 
-        public List<Order> GetByUserId(HttpContext httpContext)
+        public IList GetByUserId(HttpContext httpContext)
         {
             string userId = UserUtil.GetCurrentUserParam(httpContext, "id");
+       
 
-            return context.Order.Where(x => x.UserId.Equals(userId)).ToList();
+            return context.Order.Join(context.Doctor, m => m.UserId, f => f.Id, (m, f) => new
+            {
+                m.Id,
+                m.Date,
+                m.Address,
+                m.Description,
+                m.Prescription,
+                m.Status,
+                m.Score,
+                m.DoctorId,
+                m.UserId,
+                f.UserName,
+                f.Birthday,
+                f.Sex,
+                f.PhoneNumber
+            }).Where(x=>x.UserId.Equals(userId)).ToList();
+
+            //return context.Order.Where(x => x.UserId.Equals(userId)).ToList();
         }
 
         public Order GetById(string id) => context.Order.SingleOrDefault(x => x.Id.Equals(id));

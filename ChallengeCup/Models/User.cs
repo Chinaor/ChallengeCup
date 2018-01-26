@@ -12,8 +12,7 @@ namespace ChallengeCup.Models
 
         //性别
         [Required]
-        [Range(0, 1)]
-        public int Sex { set; get; }
+        public string Sex { set; get; }
 
         //出生日期
         [Required]

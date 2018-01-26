@@ -70,6 +70,12 @@ namespace ChallengeCup.Controllers
 
         }
 
+        public async Task<JsonResult> GetUser()
+        {
+            UserUtil.GetCurrentUser(HttpContext);
+            return Json(1);
+        }
+
         [Authorize]
         [HttpPost]
         public JsonResult Test1()
