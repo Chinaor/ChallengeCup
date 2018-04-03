@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ChallengeCup
 {
@@ -40,6 +41,12 @@ namespace ChallengeCup
             services.AddScoped<OrderService>();
 
             services.AddScoped<ScoreService>();
+
+            services.AddScoped<CourierService>();
+
+            services.AddScoped<MedicineOrderService>();
+
+            services.AddScoped<MedicineService>();
 
             services.AddMvc();
             

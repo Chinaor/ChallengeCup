@@ -41,6 +41,12 @@ namespace ChallengeCup.Controllers
             return ResultUtil.Success();
         }
 
-      
+        [HttpPost]
+        public Result Edit(string id, [Bind("Name, Type, Indication, Contraindication, Description, Price")]Medicine medicine)
+        {
+            medicine.Id = id;
+            medicineService.Update(medicine);
+            return ResultUtil.Success();
+        }
     }
 }

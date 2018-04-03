@@ -24,9 +24,23 @@ namespace ChallengeCup.Services
             this.context = context;
         }
 
-        public List<Order> GetAll()
+        public IList GetAll()
         {
-            return context.Order.Include(i => i.Score).ToList();
+            return context.Order.Include(i => i.Score).Join(context.User, m=>m.UserId, f=>f.Id,(m, f)=>new
+            {
+                m.Id,
+                m.Date,
+                m.Address,
+                m.Description,
+                m.Prescription,
+                m.Status,
+                m.Score,
+                m.DoctorId,
+                m.UserId,
+                f.UserName,
+                f.Birthday,
+                f.Sex
+            }).ToList();
         }
 
         public IList GetByDoctorId(HttpContext httpContext)

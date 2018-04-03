@@ -46,5 +46,11 @@ namespace ChallengeCup.Services
             context.Remove(medicine);
             context.SaveChanges();
         }
+
+        public void Update(Medicine medicine)
+        {
+            context.Update(medicine);
+            context.SaveChanges();
+        }
     }
 }

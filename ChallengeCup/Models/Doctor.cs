@@ -8,7 +8,7 @@ namespace ChallengeCup.Models
 {
     public class Doctor:IUser
     {
-
+        
         //快速生成属性，prop 两下tab
                     
         //性别

@@ -17,6 +17,8 @@ namespace ChallengeCup.Data
 
         public DbSet<Order> Order { get; set; }
 
+        public DbSet<Courier> Courier { get; set; }
+
         public ChallengeCupDbContext(DbContextOptions<ChallengeCupDbContext> options)
             : base(options)
         {
